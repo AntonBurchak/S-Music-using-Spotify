@@ -1,0 +1,33 @@
+
+.categoryItem {
+  width: calc(100% / 8 - 20px);
+  min-width: 180px;
+  margin: 10px 10px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  background: url("../../assets/images/test.jpg");
+  object-fit: cover;
+  transition: .3s filter;
+  filter: grayscale(100%);
+  border-radius: 5px;
+  padding: 25px;
+  background-position: center;
+  box-sizing: border-box;
+  position: relative;
+  &:hover {
+    filter: grayscale(0%) saturate(300%);
+  }
+
+  h2 {
+    user-select: none;
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 400;
+    white-space: normal;
+    margin-top: auto;
+    text-align: center;
+  }
+}
