@@ -1,2 +1,0 @@
-export const GET_CATEGORIES = 'GET_CATEGORIES';
-export const SET_CATEGORIES = 'SET_CATEGORIES';
