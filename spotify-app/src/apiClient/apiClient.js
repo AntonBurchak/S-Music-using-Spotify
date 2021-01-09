@@ -1,3 +1,9 @@
+export function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+        "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return matches ? decodeURIComponent(matches[1]) : undefined;
+}
 
 const APIController = (function() {
     const clientId = 'd08f348eb8f4452fac895c872a8dc6db';
@@ -15,32 +21,43 @@ const APIController = (function() {
             body: 'grant_type=client_credentials'
         });
 
-        const data = await result.json();
-
-        return {
-            token: data.access_token,
-            token_type: data.token_type
-        }
+        return await result.json();
     }
 
     const getListOfCategories = async () => {
-        const limit = 5;
+        const limit = 15;
 
         const result = await fetch(`${basePoint}browse/categories?limit=${limit}`, {
             headers: {
-                'Authorization': (await getAuthToken()).token_type + (await getAuthToken()).token
+                'Authorization': `${getCookie('token_type')} ${getCookie('token')}`
+            }
+        })
+
+        return await result.json();
+    }
+
+    const searchByTrackName = async (name) => {
+        const result = await fetch(`${basePoint}search?q=${name}&type=track`, {
+            headers: {
+                'Authorization': `${getCookie('token_type')} ${getCookie('token')}`
             }
         })
 
         const data = await result.json();
         console.log(data);
-
-        return data;
     }
 
+    getAuthToken().then((data) => {
+        document.cookie = `token=${data.access_token}`;
+        document.cookie = `token_type=${data.token_type}`;
+
+        console.log(document.cookie)
+    });
+
+
     return {
-        getAuthToken,
-        getListOfCategories
+        getListOfCategories,
+        searchByTrackName
     }
 })();
 
